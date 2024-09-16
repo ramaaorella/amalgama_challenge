@@ -1,0 +1,9 @@
+## Ejercicio 3
+
+1- Tomé la decisión de almacenar el token en el localStorage para persistirlo durante la sesión del usuario, y así tenerlo disponible para las requests subsiguientes (podría haberse hecho también persistiéndolo en sessionStorage). Sin embargo, ninguno de los dos me parece la mejor solución porque se expone al token y queda vulnerable a XSS. 
+
+Una alternativa más segura sería manejar el authToken únicamente en memoria y utilizar un endpoint /refreshToken en la API para generar nuevos tokens de acceso a partir de un token de mayor duración. Este token de mayor duración se almacenaría solo como una cookie HttpOnly y Secure, lo que impide el acceso desde JavaScript del lado del cliente y garantiza que la cookie solo se envíe a través de conexiones HTTPS. Cuando se hace el login, el _authToken_ que devuelve el servidor se almacenaría sólo en memoria y se utilizaría, hasta expirar y generar uno nuevo, en las siguientes requests. De esta manera, se puede mantener la autenticación sin caer en extender exageradamente el tiempo de vida de los tokens, ni tampoco exponiendo los datos a posibles ataques. Pero esta solución implica tener acceso a la implementación de la api, que no es el caso.
+
+2- Entiendo que los servicios a la api tienen código repetido, pero es sobretodo por la simpleza de las requests. Podría abstraerse el comportamiento en común pero me parece mejor mantenerlos como entidades separadas por si escalan distinto.
+
+3- La información que se muestra en el Home (página privada) se hizo como prueba de concepto. La data no está tipada y muestra errores de ts, pero se entiende que no es parte del alcance del ej.
